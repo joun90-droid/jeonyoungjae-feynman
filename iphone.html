@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>영재 파인만 물리학</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#070b14">
+  <style>:root {
+  --bg: #070b14;
+  --bg2: #0c1222;
+  --text: #f0f4ff;
+  --muted: #8b9cb8;
+  --accent: #5eead4;
+  --accent2: #fbbf24;
+  --accent3: #818cf8;
+  --line: rgba(148, 163, 184, 0.14);
+  --card: rgba(255, 255, 255, 0.035);
+  --card-hover: rgba(255, 255, 255, 0.055);
+  --glow: rgba(94, 234, 212, 0.25);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Noto Sans KR", "DM Sans", sans-serif;
+  color: var(--text);
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(129, 140, 248, 0.18), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 20%, rgba(94, 234, 212, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 0% 80%, rgba(251, 191, 36, 0.06), transparent 45%),
+    linear-gradient(180deg, var(--bg2), var(--bg));
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+/* Background orbits */
+.bg-orbit {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(94, 234, 212, 0.08);
+}
+
+.o1 {
+  width: min(680px, 120vw);
+  height: min(680px, 120vw);
+  top: -28%;
+  right: -18%;
+  animation: spin 80s linear infinite;
+}
+
+.o2 {
+  width: min(420px, 90vw);
+  height: min(420px, 90vw);
+  bottom: -12%;
+  left: -10%;
+  border-color: rgba(251, 191, 36, 0.07);
+  animation: spin 60s linear infinite reverse;
+}
+
+.o3 {
+  width: 220px;
+  height: 220px;
+  top: 42%;
+  left: 8%;
+  border-color: rgba(129, 140, 248, 0.1);
+  animation: spin 45s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 18px 64px;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.brand { display: flex; gap: 14px; align-items: center; }
+
+.logo {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+
+.logo-core {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  font-style: italic;
+  color: #071018;
+  background: linear-gradient(145deg, var(--accent), var(--accent3));
+  box-shadow: 0 0 24px var(--glow);
+}
+
+.logo-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 18px;
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  animation: pulse-ring 3s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+.brand h1 {
+  font-size: clamp(1.15rem, 3.6vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+
+.link {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link:hover { color: var(--accent); }
+
+.pill-link {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+/* Hero */
+.hero {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin-bottom: 18px;
+  background:
+    linear-gradient(160deg, rgba(94, 234, 212, 0.08) 0%, transparent 42%),
+    linear-gradient(220deg, rgba(129, 140, 248, 0.06) 0%, transparent 38%),
+    rgba(255, 255, 255, 0.02);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.hero-compact { padding: 24px 22px; }
+
+.hero-badge {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(94, 234, 212, 0.25);
+  background: rgba(94, 234, 212, 0.06);
+}
+
+.hero h2 {
+  font-family: "Playfair Display", "Noto Sans KR", serif;
+  font-size: clamp(1.55rem, 5vw, 2.35rem);
+  line-height: 1.22;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hero-accent {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero .sub {
+  color: var(--muted);
+  margin-top: 12px;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  max-width: 52ch;
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+.notice {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(251, 191, 36, 0.06);
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  color: #d4d4d8;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.notice-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: var(--accent2);
+  background: rgba(251, 191, 36, 0.15);
+}
+
+/* Volume tabs */
+.vol-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.vol-tab {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--muted);
+  border-radius: var(--radius);
+  padding: 14px 12px;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vol-tab:hover {
+  background: var(--card-hover);
+  border-color: rgba(94, 234, 212, 0.2);
+}
+
+.vol-tab.active {
+  color: #071018;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  box-shadow: 0 8px 28px rgba(94, 234, 212, 0.22);
+  transform: translateY(-1px);
+}
+
+.vol-tab b { display: block; font-size: 0.92rem; margin-bottom: 3px; font-weight: 800; }
+.vol-tab span { font-size: 0.72rem; opacity: 0.88; }
+
+/* Search */
+.search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 13px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search:focus-within {
+  border-color: rgba(94, 234, 212, 0.35);
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.08);
+}
+
+.search-icon { color: var(--muted); display: flex; }
+
+.search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.94rem;
+}
+
+.search input::placeholder { color: #64748b; }
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: var(--card);
+  transition: background 0.2s;
+}
+
+.stat:hover { background: var(--card-hover); }
+
+.stat .k {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stat .v {
+  margin-top: 5px;
+  font-weight: 900;
+  font-size: 1.15rem;
+  font-family: "DM Sans", sans-serif;
+  background: linear-gradient(90deg, var(--text), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Chapter list */
+.list { display: grid; gap: 10px; }
+
+.item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s;
+}
+
+.item:hover {
+  border-color: rgba(148, 163, 184, 0.22);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.item.open {
+  border-color: rgba(94, 234, 212, 0.35);
+  background: linear-gradient(180deg, rgba(94, 234, 212, 0.07), rgba(255, 255, 255, 0.02));
+  box-shadow: 0 12px 40px rgba(94, 234, 212, 0.08);
+}
+
+.item-btn {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.item-btn:hover { background: rgba(255, 255, 255, 0.02); }
+
+.no {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  background: linear-gradient(145deg, rgba(94, 234, 212, 0.18), rgba(129, 140, 248, 0.12));
+  color: var(--accent);
+  border: 1px solid rgba(94, 234, 212, 0.15);
+}
+
+.meta .t { font-weight: 800; font-size: 0.96rem; line-height: 1.35; }
+.meta .s { color: var(--muted); font-size: 0.78rem; margin-top: 4px; line-height: 1.4; }
+
+.go {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(94, 234, 212, 0.08);
+}
+
+.panel {
+  display: none;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--line);
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.item.open .panel { display: block; }
+
+.panel p {
+  color: #c8d3e8;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  padding-top: 14px;
+  margin-bottom: 14px;
+  white-space: pre-line;
+}
+
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  font-family: inherit;
+  color: #071018;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(94, 234, 212, 0.25);
+}
+
+.btn.ghost {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.empty {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+/* Footer */
+.footer {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-inner {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 2;
+}
+
+.footer a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer a:hover { color: var(--accent2); }
+
+.footer .copy { opacity: 0.7; font-size: 0.74rem; }
+
+/* Legal page */
+.legal-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  background: var(--card);
+  display: grid;
+  gap: 18px;
+}
+
+.legal-card h3 {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.legal-card p {
+  color: #c8d3e8;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  margin-top: -10px;
+}
+
+@media (max-width: 700px) {
+  .vol-tabs { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr; }
+  .item-btn { grid-template-columns: 48px 1fr; }
+  .go { display: none; }
+  .hero-chips { gap: 6px; }
+}
+
+/* Reader */
+.reader-body { padding-bottom: 48px; }
+
+.reader-bg .o1 { top: -20%; right: -30%; opacity: 0.6; }
+
+.reader-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(7, 11, 20, 0.88);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+}
+
+.rb-mid { min-width: 0; }
+
+.rb-mid strong {
+  display: block;
+  font-size: 0.96rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 800;
+}
+
+.rb-mid span { color: var(--muted); font-size: 0.72rem; }
+
+.rb-actions { display: flex; gap: 6px; }
+
+.rb-btn {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.rb-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(94, 234, 212, 0.25);
+}
+
+.rb-btn.primary {
+  border: 0;
+  color: #071018;
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+}
+
+.rb-btn:disabled { opacity: 0.35; cursor: default; }
+
+.reader-note {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 14px auto 0;
+  padding: 10px 18px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.reader-note a { color: var(--accent); font-weight: 700; }
+
+.reader-main {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 10px 18px 28px;
+}
+
+.reader-progress {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.reader-progress .bar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.reader-progress .bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.25s ease;
+  border-radius: 999px;
+}
+
+.reader-progress p { color: var(--muted); font-size: 0.82rem; }
+
+.reader-article {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 28px 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  line-height: 1.85;
+  box-shadow: var(--shadow);
+}
+
+.reader-lead {
+  color: #b8c8e0;
+  font-size: 0.94rem;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  font-style: italic;
+}
+
+.reader-article h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  margin: 24px 0 12px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.reader-article p {
+  margin-bottom: 15px;
+  color: #e2e8f8;
+  font-size: 1rem;
+}
+
+.reader-article .loading,
+.reader-article .error {
+  color: var(--muted);
+  text-align: center;
+  padding: 36px 12px;
+}
+
+.reader-footer {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto 32px;
+  padding: 0 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  .reader-bar { grid-template-columns: 1fr; }
+  .rb-actions { justify-content: flex-end; }
+}
+
+.view-hidden{display:none!important}
+  </style>
+</head>
+<body>
+  <noscript><p style="padding:20px;color:#fff">JavaScript가 필요합니다. Safari에서 열어주세요.</p></noscript>
+
+  <div id="view-home">
+    <div class="bg-orbit" aria-hidden="true"><span class="orbit o1"></span><span class="orbit o2"></span><span class="orbit o3"></span></div>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"><span class="logo-core">F</span><span class="logo-ring"></span></div>
+          <div><h1>영재 파인만 물리학</h1><p>1·2·3권 한글 챕터 가이드</p></div>
+        </div>
+        <a class="link pill-link" href="#privacy">개인정보</a>
+      </header>
+      <section class="hero">
+        <div class="hero-badge">The Feynman Lectures on Physics</div>
+        <h2>챕터를 눌러<br><span class="hero-accent">한글로 쉽게</span> 찾아보세요</h2>
+        <p class="sub">Safari에서 열면 챕터 목록이 표시됩니다.</p>
+        <div class="hero-chips"><span class="chip">3권 · 52+ 챕터</span><span class="chip">한글 자동 번역</span><span class="chip">Caltech 원문</span></div>
+        <div class="notice"><span class="notice-icon">ℹ</span><span>미리보기에서는 목록이 0으로 보일 수 있습니다. ↗ 공유 → Safari에서 열기</span></div>
+      </section>
+      <div class="vol-tabs" id="volTabs" role="tablist"></div>
+      <label class="search">
+        <span class="search-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
+        <input id="q" type="search" placeholder="챕터 제목 검색 (한글 / 영어)" autocomplete="off">
+      </label>
+      <div class="stats">
+        <div class="stat"><div class="k">현재 권</div><div class="v" id="statVol">-</div></div>
+        <div class="stat"><div class="k">챕터 수</div><div class="v" id="statCount">-</div></div>
+        <div class="stat"><div class="k">검색</div><div class="v" id="statFilter">-</div></div>
+      </div>
+      <section class="list" id="list"></section>
+      <footer class="footer"><div class="footer-inner"><p>원문: <a href="https://www.feynmanlectures.caltech.edu/" target="_blank" rel="noopener">feynmanlectures.caltech.edu</a></p></div></footer>
+    </div>
+  </div>
+
+  <div id="view-read" class="view-hidden reader-body">
+    <div class="bg-orbit reader-bg" aria-hidden="true"><span class="orbit o1"></span><span class="orbit o2"></span></div>
+    <header class="reader-bar">
+      <a class="rb-btn" href="#" id="btnBack">← 목록</a>
+      <div class="rb-mid"><strong id="rTitle">…</strong><span id="rSub"></span></div>
+      <div class="rb-actions"><button type="button" class="rb-btn" id="btnPrev">이전</button><button type="button" class="rb-btn primary" id="btnNext">다음</button></div>
+    </header>
+    <div class="reader-note"><span class="notice-icon">ℹ</span> 자동 번역 · <a id="officialLink" href="#" target="_blank" rel="noopener">영문 원문</a></div>
+    <main class="reader-main">
+      <div class="reader-progress" id="progress" hidden><div class="bar"><i id="progressBar"></i></div><p id="progressText">준비 중…</p></div>
+      <article class="reader-article" id="article"><p class="loading">불러오는 중…</p></article>
+    </main>
+    <footer class="reader-footer"><a class="btn" id="btnOfficialBottom" href="#" target="_blank" rel="noopener">영문 원문</a><button type="button" class="btn ghost" id="btnNextBottom">다음</button></footer>
+  </div>
+
+  <div id="view-privacy" class="view-hidden">
+    <div class="bg-orbit" aria-hidden="true"><span class="orbit o1"></span><span class="orbit o2"></span></div>
+    <main class="app">
+      <header class="topbar"><a class="link pill-link" href="#">← 홈</a></header>
+      <section class="hero hero-compact"><div class="hero-badge">Privacy</div><h2>개인정보처리방침</h2></section>
+      <section class="legal-card"><p>회원가입 없음 · 번역 캐시용 localStorage · 원문 저작권 Caltech</p></section>
+    </main>
+  </div>
+
+  <script>
+window.FEYNMAN_DATA = {
+  "books": [
+    {
+      "id": "I",
+      "title": "1권 · 역학·복사·열",
+      "subtitle": "Volume I",
+      "desc": "원자·역학·상대론·파동·열역학까지, 물리학의 큰 그림을 여는 강의입니다.",
+      "chapters": [
+        {
+          "id": "I_01",
+          "no": 1,
+          "titleEn": "Atoms in Motion",
+          "titleKo": "원자의 운동",
+          "summary": "물질이 원자로 이루어져 있다는 관점에서 물리학을 시작합니다. 원자·분자의 운동과 열의 관계를 직관적으로 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_01.html"
+        },
+        {
+          "id": "I_02",
+          "no": 2,
+          "titleEn": "Basic Physics",
+          "titleKo": "기본 물리학",
+          "summary": "물리학이 다루는 기본 법칙과 관측의 역할을 정리합니다. 이후 강의 전체를 읽는 지도가 됩니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_02.html"
+        },
+        {
+          "id": "I_03",
+          "no": 3,
+          "titleEn": "The Relation of Physics to Other Sciences",
+          "titleKo": "다른 학문과의 관계",
+          "summary": "화학·생물·천문·지질 등과 물리학이 어떻게 연결되는지 폭넓게 살펴봅니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_03.html"
+        },
+        {
+          "id": "I_04",
+          "no": 4,
+          "titleEn": "Conservation of Energy",
+          "titleKo": "에너지 보존",
+          "summary": "에너지가 형태만 바뀌고 총량은 보존된다는 핵심 원리를 다양한 예시로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_04.html"
+        },
+        {
+          "id": "I_05",
+          "no": 5,
+          "titleEn": "Time and Distance",
+          "titleKo": "시간과 거리",
+          "summary": "물리량으로서의 시간과 길이를 어떻게 정의하고 측정하는지 기초부터 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_05.html"
+        },
+        {
+          "id": "I_06",
+          "no": 6,
+          "titleEn": "Probability",
+          "titleKo": "확률",
+          "summary": "물리 현상과 측정에서 확률이 왜 중요한지, 기본 개념을 쉽게 풀어줍니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_06.html"
+        },
+        {
+          "id": "I_07",
+          "no": 7,
+          "titleEn": "The Theory of Gravitation",
+          "titleKo": "만유인력 이론",
+          "summary": "뉴턴의 중력 법칙과 천체 운동의 기본 아이디어를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_07.html"
+        },
+        {
+          "id": "I_08",
+          "no": 8,
+          "titleEn": "Motion",
+          "titleKo": "운동",
+          "summary": "위치·속도·가속도의 관계와 운동을 기술하는 기본 언어를 배웁니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_08.html"
+        },
+        {
+          "id": "I_09",
+          "no": 9,
+          "titleEn": "Newton's Laws of Dynamics",
+          "titleKo": "뉴턴의 운동법칙",
+          "summary": "힘과 운동을 연결하는 뉴턴의 법칙을 중심으로 역학의 기초를 세웁니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_09.html"
+        },
+        {
+          "id": "I_10",
+          "no": 10,
+          "titleEn": "Conservation of Momentum",
+          "titleKo": "운동량 보존",
+          "summary": "충돌과 상호작용에서 운동량이 보존되는 이유를 직관과 수식으로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_10.html"
+        },
+        {
+          "id": "I_11",
+          "no": 11,
+          "titleEn": "Vectors",
+          "titleKo": "벡터",
+          "summary": "방향이 있는 물리량을 다루는 벡터의 개념과 연산 기초를 익힙니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_11.html"
+        },
+        {
+          "id": "I_12",
+          "no": 12,
+          "titleEn": "Characteristics of Force",
+          "titleKo": "힘의 특성",
+          "summary": "여러 종류의 힘과 그 성질, 역학에서 힘을 다루는 방식을 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_12.html"
+        },
+        {
+          "id": "I_13",
+          "no": 13,
+          "titleEn": "Work and Potential Energy",
+          "titleKo": "일과 위치에너지",
+          "summary": "일과 에너지의 관계, 위치에너지 개념의 출발점을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_13.html"
+        },
+        {
+          "id": "I_14",
+          "no": 14,
+          "titleEn": "Work and Potential Energy (conclusion)",
+          "titleKo": "일과 위치에너지 (이어서)",
+          "summary": "위치에너지와 보존력의 관계를 더 깊게 발전시킵니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_14.html"
+        },
+        {
+          "id": "I_15",
+          "no": 15,
+          "titleEn": "The Special Theory of Relativity",
+          "titleKo": "특수상대성이론",
+          "summary": "빛과 관측자의 운동이 시간과 공간에 미치는 영향을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_15.html"
+        },
+        {
+          "id": "I_16",
+          "no": 16,
+          "titleEn": "Relativistic Energy and Momentum",
+          "titleKo": "상대론적 에너지와 운동량",
+          "summary": "상대론에서 에너지·운동량이 어떻게 재정의되는지 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_16.html"
+        },
+        {
+          "id": "I_17",
+          "no": 17,
+          "titleEn": "Space-Time",
+          "titleKo": "시공간",
+          "summary": "시간과 공간을 하나로 보는 시공간 개념을 쉽게 안내합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_17.html"
+        },
+        {
+          "id": "I_18",
+          "no": 18,
+          "titleEn": "Rotation in Two Dimensions",
+          "titleKo": "2차원 회전",
+          "summary": "평면에서의 회전 운동과 각운동의 기초를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_18.html"
+        },
+        {
+          "id": "I_19",
+          "no": 19,
+          "titleEn": "Center of Mass; Moment of Inertia",
+          "titleKo": "질량중심과 관성모멘트",
+          "summary": "강체 운동을 이해하는 데 핵심인 질량중심·관성모멘트를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_19.html"
+        },
+        {
+          "id": "I_20",
+          "no": 20,
+          "titleEn": "Rotation in Three Dimensions",
+          "titleKo": "3차원 회전",
+          "summary": "3차원 회전과 각운동량의 방향을 포함한 개념으로 확장합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_20.html"
+        },
+        {
+          "id": "I_21",
+          "no": 21,
+          "titleEn": "The Harmonic Oscillator",
+          "titleKo": "조화진동자",
+          "summary": "용수철·진자와 같은 진동의 기본 모형인 조화진동자를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_21.html"
+        },
+        {
+          "id": "I_22",
+          "no": 22,
+          "titleEn": "Algebra",
+          "titleKo": "대수",
+          "summary": "물리학에 필요한 대수적 도구와 복소수 등의 기초를 점검합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_22.html"
+        },
+        {
+          "id": "I_23",
+          "no": 23,
+          "titleEn": "Resonance",
+          "titleKo": "공명",
+          "summary": "진동계에서 공명이 일어나는 조건과 실제 예를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_23.html"
+        },
+        {
+          "id": "I_24",
+          "no": 24,
+          "titleEn": "Transients",
+          "titleKo": "과도현상",
+          "summary": "갑자기 조건이 바뀔 때 계가 안정 상태로 가는 과정을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_24.html"
+        },
+        {
+          "id": "I_25",
+          "no": 25,
+          "titleEn": "Linear Systems and Review",
+          "titleKo": "선형계와 복습",
+          "summary": "선형 시스템의 관점에서 앞선 진동·공명 내용을 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_25.html"
+        },
+        {
+          "id": "I_26",
+          "no": 26,
+          "titleEn": "Optics: The Principle of Least Time",
+          "titleKo": "광학: 최소시간 원리",
+          "summary": "빛이 경로를 선택하는 원리를 최소시간 관점으로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_26.html"
+        },
+        {
+          "id": "I_27",
+          "no": 27,
+          "titleEn": "Geometrical Optics",
+          "titleKo": "기하광학",
+          "summary": "반사·굴절과 렌즈·거울의 기하학적 취급을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_27.html"
+        },
+        {
+          "id": "I_28",
+          "no": 28,
+          "titleEn": "Electromagnetic Radiation",
+          "titleKo": "전자기 복사",
+          "summary": "가속 전하와 전자기파, 빛의 전자기적 본성을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_28.html"
+        },
+        {
+          "id": "I_29",
+          "no": 29,
+          "titleEn": "Interference",
+          "titleKo": "간섭",
+          "summary": "파동이 겹칠 때 생기는 간섭 무늬의 원리를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_29.html"
+        },
+        {
+          "id": "I_30",
+          "no": 30,
+          "titleEn": "Diffraction",
+          "titleKo": "회절",
+          "summary": "빛이 장애물·틈을 지날 때 휘어지는 회절 현상을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_30.html"
+        },
+        {
+          "id": "I_31",
+          "no": 31,
+          "titleEn": "The Origin of the Refractive Index",
+          "titleKo": "굴절률의 기원",
+          "summary": "매질 속에서 빛의 속도가 달라지는 이유를 원자 수준에서 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_31.html"
+        },
+        {
+          "id": "I_32",
+          "no": 32,
+          "titleEn": "Radiation Damping. Light Scattering",
+          "titleKo": "복사감쇠와 빛 산란",
+          "summary": "전하의 복사와 산란이 빛·색에 어떻게 연결되는지 살펴봅니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_32.html"
+        },
+        {
+          "id": "I_33",
+          "no": 33,
+          "titleEn": "Polarization",
+          "titleKo": "편광",
+          "summary": "빛의 편광 상태와 그 물리적 의미를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_33.html"
+        },
+        {
+          "id": "I_34",
+          "no": 34,
+          "titleEn": "Relativistic Effects in Radiation",
+          "titleKo": "복사에서의 상대론 효과",
+          "summary": "빠르게 움직이는 전하의 복사에서 상대론이 만드는 효과를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_34.html"
+        },
+        {
+          "id": "I_35",
+          "no": 35,
+          "titleEn": "Color Vision",
+          "titleKo": "색채 시각",
+          "summary": "사람이 색을 지각하는 물리학·생리학적 기초를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_35.html"
+        },
+        {
+          "id": "I_36",
+          "no": 36,
+          "titleEn": "Mechanisms of Seeing",
+          "titleKo": "시각의 메커니즘",
+          "summary": "눈이 빛을 신호로 바꾸는 과정과 시각의 물리 원리를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_36.html"
+        },
+        {
+          "id": "I_37",
+          "no": 37,
+          "titleEn": "Quantum Behavior",
+          "titleKo": "양자 거동",
+          "summary": "전자·광자의 기묘한 양자 행동을 실험적 직관으로 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_37.html"
+        },
+        {
+          "id": "I_38",
+          "no": 38,
+          "titleEn": "The Relation of Wave and Particle Viewpoints",
+          "titleKo": "파동과 입자 관점",
+          "summary": "파동과 입자라는 두 관점이 어떻게 공존하는지 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_38.html"
+        },
+        {
+          "id": "I_39",
+          "no": 39,
+          "titleEn": "The Kinetic Theory of Gases",
+          "titleKo": "기체운동론",
+          "summary": "기체 압력·온도를 분자 운동으로 설명하는 기초 이론입니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_39.html"
+        },
+        {
+          "id": "I_40",
+          "no": 40,
+          "titleEn": "The Principles of Statistical Mechanics",
+          "titleKo": "통계역학의 원리",
+          "summary": "수많은 입자의 평균 행동으로 거시 현상을 이해하는 틀을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_40.html"
+        },
+        {
+          "id": "I_41",
+          "no": 41,
+          "titleEn": "The Brownian Movement",
+          "titleKo": "브라운 운동",
+          "summary": "작은 입자의 불규칙 운동이 원자의 존재를 어떻게 뒷받침하는지 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_41.html"
+        },
+        {
+          "id": "I_42",
+          "no": 42,
+          "titleEn": "Applications of Kinetic Theory",
+          "titleKo": "기체운동론의 응용",
+          "summary": "평균자유행정 등 기체운동론의 구체적 응용을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_42.html"
+        },
+        {
+          "id": "I_43",
+          "no": 43,
+          "titleEn": "Diffusion",
+          "titleKo": "확산",
+          "summary": "입자가 퍼져 나가는 확산 현상과 그 수식적 기초를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_43.html"
+        },
+        {
+          "id": "I_44",
+          "no": 44,
+          "titleEn": "The Laws of Thermodynamics",
+          "titleKo": "열역학 법칙",
+          "summary": "에너지·엔트로피와 열역학 법칙들의 의미를 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_44.html"
+        },
+        {
+          "id": "I_45",
+          "no": 45,
+          "titleEn": "Illustrations of Thermodynamics",
+          "titleKo": "열역학의 예",
+          "summary": "열역학 법칙이 실제 상황에서 어떻게 나타나는지 예시로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_45.html"
+        },
+        {
+          "id": "I_46",
+          "no": 46,
+          "titleEn": "Ratchet and Pawl",
+          "titleKo": "래칫과 폴",
+          "summary": "비가역성과 엔트로피의 직관을 ‘래칫’ 모형으로 재미있게 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_46.html"
+        },
+        {
+          "id": "I_47",
+          "no": 47,
+          "titleEn": "Sound. The Wave Equation",
+          "titleKo": "소리와 파동방정식",
+          "summary": "소리가 매질을 통해 전달되는 파동의 기본 방정식을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_47.html"
+        },
+        {
+          "id": "I_48",
+          "no": 48,
+          "titleEn": "Beats",
+          "titleKo": "맥놀이",
+          "summary": "비슷한 주파수의 파동이 겹칠 때 생기는 맥놀이 현상을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_48.html"
+        },
+        {
+          "id": "I_49",
+          "no": 49,
+          "titleEn": "Modes",
+          "titleKo": "모드",
+          "summary": "고정된 계에서 허용되는 고유진동 모드의 개념을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_49.html"
+        },
+        {
+          "id": "I_50",
+          "no": 50,
+          "titleEn": "Harmonics",
+          "titleKo": "배음",
+          "summary": "기본음과 배음의 관계, 음악·파동과의 연결을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_50.html"
+        },
+        {
+          "id": "I_51",
+          "no": 51,
+          "titleEn": "Waves",
+          "titleKo": "파동",
+          "summary": "여러 파동 현상을 통합적으로 복습·확장합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_51.html"
+        },
+        {
+          "id": "I_52",
+          "no": 52,
+          "titleEn": "Symmetry in Physical Laws",
+          "titleKo": "물리법칙과 대칭성",
+          "summary": "대칭성이 물리 법칙과 보존 법칙에 어떤 의미를 갖는지 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/I_52.html"
+        }
+      ]
+    },
+    {
+      "id": "II",
+      "title": "2권 · 전자기와 물질",
+      "subtitle": "Volume II",
+      "desc": "전자기장·회로·물질의 전기·자기·탄성·유체까지 다룹니다.",
+      "chapters": [
+        {
+          "id": "II_01",
+          "no": 1,
+          "titleEn": "Electromagnetism",
+          "titleKo": "전자기학",
+          "summary": "전기와 자기 현상을 하나의 틀로 보는 전자기학의 출발점입니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_01.html"
+        },
+        {
+          "id": "II_02",
+          "no": 2,
+          "titleEn": "Differential Calculus of Vector Fields",
+          "titleKo": "벡터장의 미분",
+          "summary": "발산·회전 등 벡터장을 미분으로 다루는 도구를 익힙니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_02.html"
+        },
+        {
+          "id": "II_03",
+          "no": 3,
+          "titleEn": "Vector Integral Calculus",
+          "titleKo": "벡터 적분",
+          "summary": "선적분·면적분과 발산정리·스토크스 정리의 기초를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_03.html"
+        },
+        {
+          "id": "II_04",
+          "no": 4,
+          "titleEn": "Electrostatics",
+          "titleKo": "정전기학",
+          "summary": "정지한 전하가 만드는 전기장과 전위의 기본을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_04.html"
+        },
+        {
+          "id": "II_05",
+          "no": 5,
+          "titleEn": "Application of Gauss' Law",
+          "titleKo": "가우스 법칙의 응용",
+          "summary": "대칭성을 이용해 전기장을 구하는 가우스 법칙 활용법을 익힙니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_05.html"
+        },
+        {
+          "id": "II_06",
+          "no": 6,
+          "titleEn": "The Electric Field in Various Circumstances",
+          "titleKo": "여러 상황의 전기장",
+          "summary": "다양한 전하 배치에서 전기장이 어떻게 생기는지 살펴봅니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_06.html"
+        },
+        {
+          "id": "II_07",
+          "no": 7,
+          "titleEn": "The Electric Field in Various Circumstances (continued)",
+          "titleKo": "여러 상황의 전기장 (이어서)",
+          "summary": "더 복잡한 기하에서 전기장 계산을 이어갑니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_07.html"
+        },
+        {
+          "id": "II_08",
+          "no": 8,
+          "titleEn": "Electrostatic Energy",
+          "titleKo": "정전기 에너지",
+          "summary": "전하 배치에 저장된 에너지와 그 의미를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_08.html"
+        },
+        {
+          "id": "II_09",
+          "no": 9,
+          "titleEn": "Electricity in the Atmosphere",
+          "titleKo": "대기 중의 전기",
+          "summary": "번개·대기 전류 등 자연 속 전기 현상을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_09.html"
+        },
+        {
+          "id": "II_10",
+          "no": 10,
+          "titleEn": "Dielectrics",
+          "titleKo": "유전체",
+          "summary": "절연체(유전체)가 전기장에 어떻게 반응하는지 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_10.html"
+        },
+        {
+          "id": "II_11",
+          "no": 11,
+          "titleEn": "Inside Dielectrics",
+          "titleKo": "유전체 내부",
+          "summary": "유전체 내부의 편극과 미시적 그림을 더 깊게 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_11.html"
+        },
+        {
+          "id": "II_12",
+          "no": 12,
+          "titleEn": "Electrostatic Analogs",
+          "titleKo": "정전기의 유사성",
+          "summary": "열전도·유동 등 다른 문제와 정전기의 수학적 유사성을 보여줍니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_12.html"
+        },
+        {
+          "id": "II_13",
+          "no": 13,
+          "titleEn": "Magnetostatics",
+          "titleKo": "정자기학",
+          "summary": "정상 전류가 만드는 자기장의 기초를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_13.html"
+        },
+        {
+          "id": "II_14",
+          "no": 14,
+          "titleEn": "The Magnetic Field in Various Situations",
+          "titleKo": "여러 상황의 자기장",
+          "summary": "전선·코일 등에서 자기장이 어떻게 형성되는지 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_14.html"
+        },
+        {
+          "id": "II_15",
+          "no": 15,
+          "titleEn": "The Vector Potential",
+          "titleKo": "벡터 퍼텐셜",
+          "summary": "자기장을 기술하는 벡터 퍼텐셜의 개념을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_15.html"
+        },
+        {
+          "id": "II_16",
+          "no": 16,
+          "titleEn": "Induced Currents",
+          "titleKo": "유도 전류",
+          "summary": "자기장이 변할 때 생기는 유도 전류의 기본을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_16.html"
+        },
+        {
+          "id": "II_17",
+          "no": 17,
+          "titleEn": "The Laws of Induction",
+          "titleKo": "유도법칙",
+          "summary": "패러데이 법칙 등 전자기 유도의 핵심 법칙들을 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_17.html"
+        },
+        {
+          "id": "II_18",
+          "no": 18,
+          "titleEn": "The Maxwell Equations",
+          "titleKo": "맥스웰 방정식",
+          "summary": "전자기학을 하나로 묶는 맥스웰 방정식의 의미를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_18.html"
+        },
+        {
+          "id": "II_19",
+          "no": 19,
+          "titleEn": "The Principle of Least Action",
+          "titleKo": "최소작용의 원리",
+          "summary": "물리 법칙을 ‘작용’의 관점에서 보는 우아한 원리를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_19.html"
+        },
+        {
+          "id": "II_20",
+          "no": 20,
+          "titleEn": "Solutions of Maxwell's Equations in Free Space",
+          "titleKo": "자유공간에서의 해",
+          "summary": "전하·전류가 없을 때 전자기파 해의 형태를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_20.html"
+        },
+        {
+          "id": "II_21",
+          "no": 21,
+          "titleEn": "Solutions of Maxwell's Equations with Currents and Charges",
+          "titleKo": "전류·전하가 있을 때의 해",
+          "summary": "원천이 있을 때 장의 해법을 확장합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_21.html"
+        },
+        {
+          "id": "II_22",
+          "no": 22,
+          "titleEn": "AC Circuits",
+          "titleKo": "교류회로",
+          "summary": "저항·코일·축전기가 있는 교류회로의 기본을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_22.html"
+        },
+        {
+          "id": "II_23",
+          "no": 23,
+          "titleEn": "Cavity Resonators",
+          "titleKo": "공동공진기",
+          "summary": "공동 속에서 전자기파가 공명하는 현상을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_23.html"
+        },
+        {
+          "id": "II_24",
+          "no": 24,
+          "titleEn": "Waveguides",
+          "titleKo": "도파관",
+          "summary": "관을 따라 전자기파가 전달되는 도파관의 원리를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_24.html"
+        },
+        {
+          "id": "II_25",
+          "no": 25,
+          "titleEn": "Electrodynamics in Relativistic Notation",
+          "titleKo": "상대론적 표기의 전기역학",
+          "summary": "상대론에 맞는 표기로 전기역학을 다시 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_25.html"
+        },
+        {
+          "id": "II_26",
+          "no": 26,
+          "titleEn": "Lorentz Transformations of the Fields",
+          "titleKo": "장의 로렌츠 변환",
+          "summary": "관측자가 바뀌면 전기장·자기장이 어떻게 섞이는지 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_26.html"
+        },
+        {
+          "id": "II_27",
+          "no": 27,
+          "titleEn": "Field Energy and Field Momentum",
+          "titleKo": "장의 에너지와 운동량",
+          "summary": "전자기장 자체가 에너지와 운동량을 가진다는 개념을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_27.html"
+        },
+        {
+          "id": "II_28",
+          "no": 28,
+          "titleEn": "Electromagnetic Mass",
+          "titleKo": "전자기적 질량",
+          "summary": "장의 에너지와 관성(질량)의 연결을 철학적·물리적으로 살펴봅니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_28.html"
+        },
+        {
+          "id": "II_29",
+          "no": 29,
+          "titleEn": "The Motion of Charges in Electric and Magnetic Fields",
+          "titleKo": "전자기장 속 전하의 운동",
+          "summary": "전기장·자기장에서 전하가 그리는 궤적을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_29.html"
+        },
+        {
+          "id": "II_30",
+          "no": 30,
+          "titleEn": "The Internal Geometry of Crystals",
+          "titleKo": "결정의 내부 기하",
+          "summary": "결정 구조의 기하학적 규칙성을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_30.html"
+        },
+        {
+          "id": "II_31",
+          "no": 31,
+          "titleEn": "Tensors",
+          "titleKo": "텐서",
+          "summary": "방향에 따라 달라지는 물리량을 다루는 텐서의 기초를 익힙니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_31.html"
+        },
+        {
+          "id": "II_32",
+          "no": 32,
+          "titleEn": "Refractive Index of Dense Materials",
+          "titleKo": "밀집 매질의 굴절률",
+          "summary": "밀한 물질에서 굴절률이 어떻게 결정되는지 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_32.html"
+        },
+        {
+          "id": "II_33",
+          "no": 33,
+          "titleEn": "Reflection from Surfaces",
+          "titleKo": "표면에서의 반사",
+          "summary": "경계면에서 전자기파의 반사·투과를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_33.html"
+        },
+        {
+          "id": "II_34",
+          "no": 34,
+          "titleEn": "The Magnetism of Matter",
+          "titleKo": "물질의 자기성",
+          "summary": "물질이 왜 자기적 성질을 띠는지 개관합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_34.html"
+        },
+        {
+          "id": "II_35",
+          "no": 35,
+          "titleEn": "Paramagnetism and Magnetic Resonance",
+          "titleKo": "상자성과 자기공명",
+          "summary": "상자성과 자기공명 현상의 기초를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_35.html"
+        },
+        {
+          "id": "II_36",
+          "no": 36,
+          "titleEn": "Ferromagnetism",
+          "titleKo": "강자성",
+          "summary": "철처럼 강한 자성을 띠는 강자성의 원리를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_36.html"
+        },
+        {
+          "id": "II_37",
+          "no": 37,
+          "titleEn": "Magnetic Materials",
+          "titleKo": "자성재료",
+          "summary": "여러 자성재료의 성질과 응용 관점을 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_37.html"
+        },
+        {
+          "id": "II_38",
+          "no": 38,
+          "titleEn": "Elasticity",
+          "titleKo": "탄성",
+          "summary": "고체가 힘을 받을 때 변형되는 탄성의 기초를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_38.html"
+        },
+        {
+          "id": "II_39",
+          "no": 39,
+          "titleEn": "Elastic Materials",
+          "titleKo": "탄성재료",
+          "summary": "실제 재료의 탄성 거동을 더 구체적으로 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_39.html"
+        },
+        {
+          "id": "II_40",
+          "no": 40,
+          "titleEn": "The Flow of Dry Water",
+          "titleKo": "이상유체의 흐름",
+          "summary": "점성이 없는 ‘마른 물’ 모형으로 유체 흐름을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_40.html"
+        },
+        {
+          "id": "II_41",
+          "no": 41,
+          "titleEn": "The Flow of Wet Water",
+          "titleKo": "점성유체의 흐름",
+          "summary": "점성이 있는 실제 유체 흐름의 기초를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_41.html"
+        },
+        {
+          "id": "II_42",
+          "no": 42,
+          "titleEn": "Curved Space",
+          "titleKo": "굽은 공간",
+          "summary": "중력과 연결된 굽은 공간의 아이디어를 맛보기로 안내합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/II_42.html"
+        }
+      ]
+    },
+    {
+      "id": "III",
+      "title": "3권 · 양자역학",
+      "subtitle": "Volume III",
+      "desc": "확률진폭·스핀·원자·반도체 등 양자역학의 핵심을 차근차근 전개합니다.",
+      "chapters": [
+        {
+          "id": "III_01",
+          "no": 1,
+          "titleEn": "Quantum Behavior",
+          "titleKo": "양자 거동",
+          "summary": "양자역학의 출발점인 기묘한 실험적 거동을 다시 짚습니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_01.html"
+        },
+        {
+          "id": "III_02",
+          "no": 2,
+          "titleEn": "The Relation of Wave and Particle Viewpoints",
+          "titleKo": "파동과 입자 관점",
+          "summary": "양자에서 파동·입자 관점이 어떻게 연결되는지 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_02.html"
+        },
+        {
+          "id": "III_03",
+          "no": 3,
+          "titleEn": "Probability Amplitudes",
+          "titleKo": "확률진폭",
+          "summary": "양자역학의 핵심 언어인 확률진폭의 규칙(간섭 포함)을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_03.html"
+        },
+        {
+          "id": "III_04",
+          "no": 4,
+          "titleEn": "Identical Particles",
+          "titleKo": "동일 입자",
+          "summary": "구별 불가능한 입자와 통계(보손·페르미온)의 기초를 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_04.html"
+        },
+        {
+          "id": "III_05",
+          "no": 5,
+          "titleEn": "Spin One",
+          "titleKo": "스핀 1",
+          "summary": "스핀 1 입자를 통해 양자 상태와 측정의 기초를 배웁니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_05.html"
+        },
+        {
+          "id": "III_06",
+          "no": 6,
+          "titleEn": "Spin One-Half",
+          "titleKo": "스핀 1/2",
+          "summary": "전자처럼 스핀 1/2인 계의 양자 상태를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_06.html"
+        },
+        {
+          "id": "III_07",
+          "no": 7,
+          "titleEn": "The Dependence of Amplitudes on Time",
+          "titleKo": "진폭의 시간 의존성",
+          "summary": "시간이 지나며 양자 상태가 어떻게 변화하는지 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_07.html"
+        },
+        {
+          "id": "III_08",
+          "no": 8,
+          "titleEn": "The Hamiltonian Matrix",
+          "titleKo": "해밀토니안 행렬",
+          "summary": "에너지와 시간 발전을 연결하는 해밀토니안 개념을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_08.html"
+        },
+        {
+          "id": "III_09",
+          "no": 9,
+          "titleEn": "The Ammonia Maser",
+          "titleKo": "암모니아 메이저",
+          "summary": "두 상태 계의 대표 예로 암모니아 메이저를 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_09.html"
+        },
+        {
+          "id": "III_10",
+          "no": 10,
+          "titleEn": "Other Two-State Systems",
+          "titleKo": "다른 두 상태 계",
+          "summary": "비슷한 두 상태 양자계들의 공통 구조를 확장합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_10.html"
+        },
+        {
+          "id": "III_11",
+          "no": 11,
+          "titleEn": "More Two-State Systems",
+          "titleKo": "두 상태 계 더보기",
+          "summary": "두 상태 계의 응용과 직관을 더 깊게 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_11.html"
+        },
+        {
+          "id": "III_12",
+          "no": 12,
+          "titleEn": "The Hyperfine Splitting in Hydrogen",
+          "titleKo": "수소의 초미세구조",
+          "summary": "수소 원자에서 나타나는 초미세 갈라짐을 양자적으로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_12.html"
+        },
+        {
+          "id": "III_13",
+          "no": 13,
+          "titleEn": "Propagation in a Crystal Lattice",
+          "titleKo": "결정격자에서의 전파",
+          "summary": "결정 속에서 전자/파동이 전파되는 양상을 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_13.html"
+        },
+        {
+          "id": "III_14",
+          "no": 14,
+          "titleEn": "Semiconductors",
+          "titleKo": "반도체",
+          "summary": "반도체 물리의 기본 아이디어를 양자역학 관점으로 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_14.html"
+        },
+        {
+          "id": "III_15",
+          "no": 15,
+          "titleEn": "The Independent Particle Approximation",
+          "titleKo": "독립입자 근사",
+          "summary": "많은 입자를 다룰 때 쓰는 독립입자 근사의 의미를 정리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_15.html"
+        },
+        {
+          "id": "III_16",
+          "no": 16,
+          "titleEn": "The Dependence of Amplitudes on Position",
+          "titleKo": "진폭의 위치 의존성",
+          "summary": "공간에 따른 진폭 변화와 파동함수의 직관을 다룹니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_16.html"
+        },
+        {
+          "id": "III_17",
+          "no": 17,
+          "titleEn": "Symmetry and Conservation Laws",
+          "titleKo": "대칭성과 보존법칙",
+          "summary": "대칭성이 보존량과 어떻게 연결되는지 양자역학에서 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_17.html"
+        },
+        {
+          "id": "III_18",
+          "no": 18,
+          "titleEn": "Angular Momentum",
+          "titleKo": "각운동량",
+          "summary": "양자 각운동량의 규칙과 의미를 소개합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_18.html"
+        },
+        {
+          "id": "III_19",
+          "no": 19,
+          "titleEn": "The Hydrogen Atom and The Periodic Table",
+          "titleKo": "수소원자와 주기율표",
+          "summary": "수소 원자 해와 주기율표의 연결을 설명합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_19.html"
+        },
+        {
+          "id": "III_20",
+          "no": 20,
+          "titleEn": "Operators",
+          "titleKo": "연산자",
+          "summary": "물리량을 연산자로 다루는 양자역학의 형식적 언어를 익힙니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_20.html"
+        },
+        {
+          "id": "III_21",
+          "no": 21,
+          "titleEn": "The Schrödinger Equation in a Classical Context: A Seminar on Superconductivity",
+          "titleKo": "슈뢰딩거 방정식과 초전도",
+          "summary": "슈뢰딩거 방정식의 고전적 맥락과 초전도 세미나로 마무리합니다.",
+          "official": "https://www.feynmanlectures.caltech.edu/III_21.html"
+        }
+      ]
+    }
+  ]
+};
+
+(function () {
+  var data = window.FEYNMAN_DATA;
+  var CACHE_PREFIX = "feyn_ko_v3_";
+  var SEPARATOR = "\n\n¶¶¶\n\n";
+  var MAX_PACK = 1400;
+  var CONCURRENCY = 16;
+
+  var article = document.getElementById("article");
+  var progress = document.getElementById("progress");
+  var progressBar = document.getElementById("progressBar");
+  var progressText = document.getElementById("progressText");
+
+  function findChapter(id) {
+    for (var i = 0; i < data.books.length; i++) {
+      var book = data.books[i];
+      for (var j = 0; j < book.chapters.length; j++) {
+        if (book.chapters[j].id === id) {
+          return { book: book, chapter: book.chapters[j], index: j };
+        }
+      }
+    }
+    return null;
+  }
+
+  function neighbor(id, dir) {
+    var found = findChapter(id);
+    if (!found) return null;
+    return found.book.chapters[found.index + dir] || null;
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function setProgress(done, total, label) {
+    progress.hidden = false;
+    var pct = total ? Math.min(100, Math.round((done / total) * 100)) : 0;
+    progressBar.style.width = pct + "%";
+    progressText.textContent = label || ("번역 중… " + pct + "%");
+  }
+
+  function hideProgress() {
+    progress.hidden = true;
+  }
+
+  function cacheGet(key) {
+    try {
+      var cached = localStorage.getItem(key);
+      if (!cached) return null;
+      var parsed = JSON.parse(cached);
+      return parsed && parsed.blocks && parsed.blocks.length ? parsed.blocks : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function cacheSet(key, blocks) {
+    try {
+      localStorage.setItem(key, JSON.stringify({ at: Date.now(), blocks: blocks }));
+    } catch (e) {
+      // quota full: drop oldest feyn keys
+      try {
+        Object.keys(localStorage)
+          .filter(function (k) { return k.indexOf("feyn_ko_") === 0; })
+          .slice(0, 5)
+          .forEach(function (k) { localStorage.removeItem(k); });
+        localStorage.setItem(key, JSON.stringify({ at: Date.now(), blocks: blocks }));
+      } catch (e2) {}
+    }
+  }
+
+  async function translateOnce(text) {
+    var q = text.trim();
+    if (!q) return "";
+    var url =
+      "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=" +
+      encodeURIComponent(q);
+    var res = await fetch(url);
+    if (!res.ok) throw new Error("번역 실패 " + res.status);
+    var json = await res.json();
+    if (!json || !json[0]) return q;
+    return json[0].map(function (row) { return row[0] || ""; }).join("");
+  }
+
+  async function translateText(text) {
+    var q = text.trim();
+    if (!q) return "";
+    if (q.length <= MAX_PACK) return translateOnce(q);
+
+    var parts = [];
+    var rest = q;
+    while (rest.length) {
+      if (rest.length <= MAX_PACK) {
+        parts.push(rest);
+        break;
+      }
+      var mid = rest.lastIndexOf(". ", MAX_PACK);
+      if (mid < MAX_PACK * 0.4) mid = rest.lastIndexOf(" ", MAX_PACK);
+      if (mid < MAX_PACK * 0.3) mid = MAX_PACK;
+      parts.push(rest.slice(0, mid + 1));
+      rest = rest.slice(mid + 1);
+    }
+
+    var out = await mapPool(parts, CONCURRENCY, translateOnce, true);
+    return out.join(" ").trim();
+  }
+
+  function cleanMarkdown(md) {
+    var text = md || "";
+    var marker = "Markdown Content:";
+    var idx = text.indexOf(marker);
+    if (idx !== -1) text = text.slice(idx + marker.length);
+
+    return text
+      .replace(/\r/g, "")
+      .replace(/!\[[^\]]*\]\([^)]+\)/g, "")
+      .replace(/\[[^\]]*\]\([^)]+\)/g, "")
+      .replace(/^#{1,6}\s*/gm, "")
+      .replace(/^\s*>\s?/gm, "")
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\*([^*]+)\*/g, "$1")
+      .replace(/_([^_]+)_/g, "$1")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/https?:\/\/\S+/g, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim();
+  }
+
+  function toBlocks(text) {
+    return text
+      .split(/\n{2,}/)
+      .map(function (b) { return b.replace(/\n/g, " ").trim(); })
+      .filter(function (b) {
+        if (!b || b.length < 8) return false;
+        if (/^(Title:|URL Source:|Published Time:|Warning:)/i.test(b)) return false;
+        if (/LOADING PAGE|Dear Reader|javascript must be supported/i.test(b)) return false;
+        if (/Copyright ©/i.test(b)) return false;
+        return true;
+      });
+  }
+
+  function packBlocks(blocks) {
+    var packs = [];
+    var cur = [];
+    var len = 0;
+    for (var i = 0; i < blocks.length; i++) {
+      var b = blocks[i];
+      var add = b.length + (cur.length ? SEPARATOR.length : 0);
+      if (cur.length && len + add > MAX_PACK) {
+        packs.push(cur);
+        cur = [];
+        len = 0;
+      }
+      if (b.length > MAX_PACK) {
+        if (cur.length) {
+          packs.push(cur);
+          cur = [];
+          len = 0;
+        }
+        packs.push([b]);
+        continue;
+      }
+      cur.push(b);
+      len += add;
+    }
+    if (cur.length) packs.push(cur);
+    return packs;
+  }
+
+  async function mapPool(items, limit, worker, silent) {
+    var results = new Array(items.length);
+    var next = 0;
+    var done = 0;
+
+    async function run() {
+      while (next < items.length) {
+        var i = next++;
+        try {
+          results[i] = await worker(items[i], i);
+        } catch (err) {
+          results[i] = null;
+        }
+        done++;
+        if (!silent) {
+          setProgress(done, items.length, "한글 번역 중… " + done + "/" + items.length);
+        }
+      }
+    }
+
+    var runners = [];
+    var n = Math.min(limit, items.length) || 1;
+    for (var r = 0; r < n; r++) runners.push(run());
+    await Promise.all(runners);
+    return results;
+  }
+
+  async function fetchEnglish(officialUrl) {
+    var res = await fetch("https://r.jina.ai/" + officialUrl, {
+      headers: { Accept: "text/plain" }
+    });
+    if (!res.ok) throw new Error("원문 불러오기 실패");
+    var md = await res.text();
+    if (!md || md.length < 200) throw new Error("원문이 비어 있습니다.");
+    return md;
+  }
+
+  async function translatePack(pack) {
+    var joined = pack.join(SEPARATOR);
+    var translated = await translateText(joined);
+    var parts = translated.split(/\n*\s*¶¶¶\s*\n*/);
+    if (parts.length === pack.length) {
+      return parts.map(function (p) { return p.trim(); });
+    }
+    // separator mangled: fall back to per-block parallel
+    return mapPool(pack, CONCURRENCY, function (b) {
+      return translateText(b).catch(function () { return b; });
+    }, true);
+  }
+
+  async function buildKorean(officialUrl, cacheKey) {
+    var cached = cacheGet(cacheKey);
+    if (cached) return cached;
+
+    setProgress(0, 1, "원문 불러오는 중…");
+    var md = await fetchEnglish(officialUrl);
+    var blocks = toBlocks(cleanMarkdown(md));
+    if (!blocks.length) throw new Error("본문을 찾지 못했습니다.");
+
+    var packs = packBlocks(blocks);
+    setProgress(0, packs.length, "한글 번역 중… 0/" + packs.length);
+
+    var packResults = await mapPool(packs, CONCURRENCY, function (pack) {
+      return translatePack(pack);
+    });
+
+    var translated = [];
+    for (var i = 0; i < packResults.length; i++) {
+      var part = packResults[i];
+      if (!part) {
+        // whole pack failed → keep English
+        translated = translated.concat(packs[i]);
+      } else {
+        translated = translated.concat(part);
+      }
+    }
+
+    cacheSet(cacheKey, translated);
+    return translated;
+  }
+
+  function renderBlocks(blocks, lead) {
+    var html = "";
+    if (lead) {
+      html += '<p class="reader-lead">' + escapeHtml(lead) + "</p>";
+    }
+    html += blocks
+      .map(function (b) {
+        var isHeading = b.length < 80 && !/[.!?。！？]$/.test(b) && /^(\d|[가-힣A-Za-z])/.test(b);
+        if (isHeading && b.length < 60) return "<h2>" + escapeHtml(b) + "</h2>";
+        return "<p>" + escapeHtml(b) + "</p>";
+      })
+      .join("");
+    article.innerHTML = html;
+  }
+
+  function wireNav(found) {
+    var ch = found.chapter;
+    document.getElementById("rTitle").textContent = ch.titleKo;
+    document.getElementById("rSub").textContent = found.book.title + " · Ch." + ch.no;
+    document.title = ch.titleKo + " (한글) | 영재 파인만 물리학";
+
+    document.getElementById("officialLink").href = ch.official;
+    document.getElementById("btnOfficialBottom").href = ch.official;
+
+    var prev = neighbor(ch.id, -1);
+    var next = neighbor(ch.id, 1);
+
+    function go(target) {
+      if (!target) return;
+      location.hash = "#read/" + encodeURIComponent(target.id);
+    }
+
+    document.getElementById("btnPrev").disabled = !prev;
+    document.getElementById("btnNext").disabled = !next;
+    document.getElementById("btnNextBottom").disabled = !next;
+    document.getElementById("btnPrev").onclick = function () { go(prev); };
+    document.getElementById("btnNext").onclick = function () { go(next); };
+    document.getElementById("btnNextBottom").onclick = function () { go(next); };
+
+    // 다음 챕터 미리 번역 캐시
+    if (next) {
+      setTimeout(function () {
+        var key = CACHE_PREFIX + next.id;
+        if (cacheGet(key)) return;
+        buildKorean(next.official, key).catch(function () {});
+      }, 300);
+    }
+  }
+
+  async function runReader(chapterId) {
+    if (!data) {
+      article.innerHTML = '<p class="error">데이터를 불러오지 못했습니다.</p>';
+      return;
+    }
+    var found = findChapter(chapterId);
+    if (!found) {
+      article.innerHTML = '<p class="error">챕터를 찾을 수 없습니다. <a href="#">목록으로</a></p>';
+      return;
+    }
+
+    wireNav(found);
+
+    try {
+      var blocks = await buildKorean(found.chapter.official, CACHE_PREFIX + found.chapter.id);
+      hideProgress();
+      renderBlocks(blocks, found.chapter.summary);
+    } catch (err) {
+      hideProgress();
+      article.innerHTML =
+        '<p class="error">한글 번역을 불러오지 못했습니다.<br>' +
+        escapeHtml(err && err.message ? err.message : String(err)) +
+        '</p><p><a class="btn" href="' +
+        escapeHtml(found.chapter.official) +
+        '" target="_blank" rel="noopener">영문 원문 직접 열기</a></p>';
+    }
+  }
+
+window.__feynmanReadRoute = function () {
+  var m = location.hash.match(/^#read\/([^/?#]+)/);
+  runReader(m ? decodeURIComponent(m[1]) : "I_01");
+};
+function bootHome() {
+  var data = window.FEYNMAN_DATA;
+  if (!data || !data.books || !data.books.length) {
+    document.getElementById("list").innerHTML = '<div class="empty">데이터를 불러오지 못했습니다. 새로고침 해주세요.</div>';
+    return;
+  }
+
+  var volId = data.books[0].id;
+  var query = "";
+  var openId = null;
+
+  var listEl = document.getElementById("list");
+  var tabsEl = document.getElementById("volTabs");
+  var qEl = document.getElementById("q");
+
+  function currentBook() {
+    return data.books.find(function (b) { return b.id === volId; }) || data.books[0];
+  }
+
+  function filteredChapters() {
+    var book = currentBook();
+    var qq = query.trim().toLowerCase();
+    if (!qq) return book.chapters.slice();
+    return book.chapters.filter(function (c) {
+      return (
+        c.titleKo.toLowerCase().indexOf(qq) !== -1 ||
+        c.titleEn.toLowerCase().indexOf(qq) !== -1 ||
+        String(c.no).indexOf(qq) !== -1
+      );
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderTabs() {
+    tabsEl.innerHTML = data.books.map(function (b) {
+      var active = b.id === volId ? " active" : "";
+      return (
+        '<button type="button" class="vol-tab' + active + '" data-vol="' + b.id + '" role="tab" aria-selected="' + (b.id === volId) + '">' +
+          "<b>" + escapeHtml(b.title) + "</b>" +
+          "<span>" + escapeHtml(b.subtitle) + " · " + b.chapters.length + "챕터</span>" +
+        "</button>"
+      );
+    }).join("");
+  }
+
+  function renderList() {
+    var book = currentBook();
+    var items = filteredChapters();
+
+    document.getElementById("statVol").textContent = book.title.split("·")[0].trim();
+    document.getElementById("statCount").textContent = String(items.length);
+    document.getElementById("statFilter").textContent = query.trim() ? "검색중" : "전체";
+
+    if (!items.length) {
+      listEl.innerHTML = '<div class="empty">검색 결과가 없습니다.</div>';
+      return;
+    }
+
+    listEl.innerHTML = items.map(function (ch) {
+      var isOpen = openId === ch.id;
+      var no = String(ch.no).padStart(2, "0");
+      return (
+        '<article class="item' + (isOpen ? " open" : "") + '" data-id="' + escapeHtml(ch.id) + '">' +
+          '<button type="button" class="item-btn" data-id="' + escapeHtml(ch.id) + '" aria-expanded="' + isOpen + '">' +
+            '<div class="no">' + no + "</div>" +
+            '<div class="meta">' +
+              '<div class="t">' + escapeHtml(ch.titleKo) + "</div>" +
+              '<div class="s">' + escapeHtml(ch.titleEn) + "</div>" +
+            "</div>" +
+            '<div class="go">' + (isOpen ? "닫기" : "보기 →") + "</div>" +
+          "</button>" +
+          '<div class="panel">' +
+            "<p>" + escapeHtml(ch.summary) + "\n\n한글 자동 번역으로 읽거나, 영문 원문을 열 수 있습니다.</p>" +
+            '<div class="panel-actions">' +
+              '<a class="btn" href="#read/' + encodeURIComponent(ch.id) + '">한글 번역으로 읽기</a>' +
+              '<a class="btn ghost" href="' + escapeHtml(ch.official) + '" target="_blank" rel="noopener noreferrer">영문 원문</a>' +
+              '<button type="button" class="btn ghost next-btn" data-id="' + escapeHtml(ch.id) + '">다음 챕터</button>' +
+            "</div>" +
+          "</div>" +
+        "</article>"
+      );
+    }).join("");
+  }
+
+  function render() {
+    renderTabs();
+    renderList();
+  }
+
+  function openChapter(id) {
+    openId = openId === id ? null : id;
+    renderList();
+    if (openId) {
+      var el = listEl.querySelector('.item[data-id="' + openId + '"]');
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }
+
+  function openNext(id) {
+    var book = currentBook();
+    var idx = book.chapters.findIndex(function (c) { return c.id === id; });
+    var next = book.chapters[idx + 1] || book.chapters[0];
+    if (!next) return;
+    openId = next.id;
+    query = "";
+    qEl.value = "";
+    render();
+    var el = listEl.querySelector('.item[data-id="' + openId + '"]');
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  tabsEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".vol-tab");
+    if (!btn) return;
+    volId = btn.getAttribute("data-vol");
+    openId = null;
+    query = "";
+    qEl.value = "";
+    render();
+  });
+
+  listEl.addEventListener("click", function (e) {
+    var nextBtn = e.target.closest(".next-btn");
+    if (nextBtn) {
+      e.preventDefault();
+      openNext(nextBtn.getAttribute("data-id"));
+      return;
+    }
+
+    // 공식 원문 링크는 기본 동작(새 탭) 그대로 둠
+    if (e.target.closest("a.btn")) return;
+
+    var btn = e.target.closest(".item-btn");
+    if (!btn) return;
+    openChapter(btn.getAttribute("data-id"));
+  });
+
+  qEl.addEventListener("input", function () {
+    query = qEl.value;
+    openId = null;
+    renderList();
+  });
+
+  render();
+}
+
+(function () {
+  var home = document.getElementById("view-home");
+  var readView = document.getElementById("view-read");
+  var privacy = document.getElementById("view-privacy");
+
+  function show(which) {
+    home.classList.toggle("view-hidden", which !== "home");
+    readView.classList.toggle("view-hidden", which !== "read");
+    privacy.classList.toggle("view-hidden", which !== "privacy");
+    document.body.classList.toggle("reader-body", which === "read");
+    window.scrollTo(0, 0);
+    if (which === "home") bootHome();
+    if (which === "read" && window.__feynmanReadRoute) window.__feynmanReadRoute();
+  }
+
+  function route() {
+    var h = location.hash || "";
+    if (h.indexOf("#read/") === 0) { show("read"); return; }
+    if (h === "#privacy") { show("privacy"); return; }
+    show("home");
+  }
+
+  document.getElementById("btnBack").onclick = function (e) { e.preventDefault(); location.hash = ""; };
+  privacy.querySelector("a").onclick = function (e) { e.preventDefault(); location.hash = ""; };
+  window.addEventListener("hashchange", route);
+  route();
+})();
+  </script>
+</body>
+</html>
